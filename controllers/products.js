@@ -10,20 +10,21 @@ class ProductsController {
         .status(201)
         .json({ status: "ok", message: "Producto creado correctamente" });
     } catch (error) {
-      res.status(500).send(e);
+      res.status(500).send(error);
     }
   }
 
   async update(req, res) {
     try {
       const { id } = req.params;
+      
       const data = await ProductsModel.update(id, req.body);
       res.status(200).json({
         status: "ok",
         data,
         message: "Producto actualizado correctamente",
       });
-    } catch (error) {
+    } catch (e) {      
       res.status(500).send(e);
     }
   }
@@ -35,7 +36,7 @@ class ProductsController {
       res
         .status(201)
         .json({ status: "ok", message: "Producto eliminado correctamente" });
-    } catch (error) {
+    } catch (e) {
       res.status(500).send(e);
     }
   }
@@ -44,7 +45,7 @@ class ProductsController {
       const data = await ProductsModel.getAll();
 
       res.status(201).json({ status: "ok", data });
-    } catch (error) {
+    } catch (e) {
       res.status(500).send(e);
     }
   }
@@ -53,8 +54,8 @@ class ProductsController {
       const { id } = req.params;
       const data = await ProductsModel.getById(id);
 
-      res.status(201).json({ status: "ok" });
-    } catch (error) {
+      res.status(201).json({ status: "ok", data });
+    } catch (e) {
       res.status(500).send(e);
     }
   }

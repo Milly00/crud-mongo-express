@@ -1,33 +1,30 @@
-import { ObjectId } from "mongodb";
-import dbClient from "../config/dbClient.js";
-
+import Product from "../schemas/products.js";
+import mongoose from "mongoose";
 class ProductsModel {
   async create(product) {
-    const colProducts = dbClient.db.collection("products");
-    return await colProducts.insertOne(product);
+    return await Product.create(product);
   }
 
   async getAll() {
-    const colProducts = dbClient.db.collection("products");
-    return await colProducts.find({}).toArray();
+    return await Product.find();
   }
 
   async getById(id) {
-    const colProducts = dbClient.db.collection("products");
-    return await colProducts.findOne({ _id: new ObjectId(id) });
+    return await Product.findById(id);
   }
 
   async update(id, product) {
-    const colProducts = dbClient.db.collection("products");
-    return await colProducts.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: product }
+    return await Product.findOneAndUpdate(
+      { _id: new mongoose.Types.ObjectId(id) },
+      product,
+      { new: true }
     );
   }
 
   async delete(id) {
-    const colProducts = dbClient.db.collection("products");
-    return await colProducts.deleteOne({ _id: new ObjectId(id) });
+    return await Product.findOneAndDelete({
+      _id: new mongoose.Types.ObjectId(id),
+    });
   }
 }
 

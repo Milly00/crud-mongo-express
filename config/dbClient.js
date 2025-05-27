@@ -1,20 +1,20 @@
 import { MongoClient } from "mongodb";
-
+import mongoose from "mongoose";
 class dbClient {
   constructor() {
-    const queryString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@${process.env.SERVER_DB}/?retryWrites=true&w=majority&appName=Cluster0`;
-    this.client = new MongoClient(queryString);
-    this.connectDB();
+    this.connect();
+  }
+  async connect() {
+    const queryString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASS_DB}@${process.env.SERVER_DB}/test?retryWrites=true&w=majority`;
+    await mongoose.connect(queryString);
   }
 
-  async connectDB() {
+  async closeConnection() {
     try {
-      await this.client.connect();
-      //get Data Base
-      this.db = this.client.db("test");
-      console.log("Connected to server");
+      await mongoose.disconnect();
+      console.log("Conection closed.");
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   }
 }
